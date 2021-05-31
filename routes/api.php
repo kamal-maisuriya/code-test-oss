@@ -23,4 +23,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('questions',QuestionController::class);
+    Route::resource('answers',AnswerController::class);
 });

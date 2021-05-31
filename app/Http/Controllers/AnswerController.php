@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Database\Factories\QuestionFactory;
 use Illuminate\Http\Request;
+use App\Models\Answer;
+use App\Http\Resources\AnswerResource;
 
-class AnswerController extends Controller
+class AnswerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,11 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        //
+        $answers = Answer::paginate();
+
+        AnswerResource::collection($answers);
+
+        return $this->sendResponse(compact('answers'));
     }
 
     /**
@@ -34,7 +41,11 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $answer = Answer::addUpdate(new Answer, $request);
+
+        $answer = new AnswerResource($answer);
+
+        return $this->sendResponse(compact('answer'), 'Answer Added.');
     }
 
     /**
@@ -43,9 +54,11 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Answer $answer)
     {
-        //
+        $answer = new AnswerResource($answer);
+
+        return $this->sendResponse(compact('answer'));
     }
 
     /**
@@ -66,9 +79,12 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Answer $answer, Request $request)
     {
-        //
+        $answer = Answer::addUpdate($answer, $request);
+        $answer = new AnswerResource($answer);
+
+        return $this->sendResponse(compact('answer'), 'Answer updated.');
     }
 
     /**
@@ -77,8 +93,10 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Answer  $answer)
     {
-        //
+        $answer->delete();
+
+        return $this->sendResponse(compact('answer'), 'Answer deleted.');
     }
 }
