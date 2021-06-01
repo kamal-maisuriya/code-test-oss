@@ -16,7 +16,7 @@ class QuestionController extends BaseController
      */
     public function index()
     {
-        $questions = Question::paginate();
+        $questions = Question::pimp()->paginate();
 
         QuestionResource::collection($questions);
 

@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Jedrzej\Pimpable\PimpableTrait;
 
 class Answer extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use PimpableTrait;
 
     public static function boot()
     {
@@ -43,6 +45,16 @@ class Answer extends Model
         });
     }
 
+    /**
+     * Get the user that owns the phone.
+     */
+    public function Question()
+    {
+        return $this->belongsTo(Question::class);
+    }
+
+
+
     public static function addUpdate($table, $request){
         if(isset($request->question_id)) {
             $table->question_id = $request->question_id;
@@ -53,6 +65,12 @@ class Answer extends Model
         }
 
         $table->save();
+
+        // For Questation
+        $question = $table->question;
+        $question->status = 'In Progress';
+        $question->save();
+
         return $table;
     }
 }

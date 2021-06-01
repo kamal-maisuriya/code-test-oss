@@ -6,10 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Jedrzej\Pimpable\PimpableTrait;
 class Question extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use PimpableTrait;
+
+    protected $sortParameterName = 'sort';
+
+    public $sortable = ['question', 'created_at','status'];
+
+    protected $searchable = ['search_txt','questation'];
 
     public static function boot()
     {
@@ -40,6 +48,14 @@ class Question extends Model
         self::deleted(function($question){
 
         });
+    }
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
     }
 
     public static function addUpdate($table, $request){
