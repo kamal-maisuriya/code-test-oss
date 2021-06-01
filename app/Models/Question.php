@@ -33,7 +33,10 @@ class Question extends Model
         });
 
         self::updating(function($question){
-            $question->updated_by = Auth::user()->id;
+            if( Auth::check()) {
+                $question->updated_by = Auth::user()->id;
+            }
+
         });
 
         self::updated(function($question){

@@ -46,6 +46,7 @@ class ChangeQuestationStatus extends Command
             $answer = $question->answers->last();
             if($answer->created_at->diffInDays($today)) {
                 $question->status = 'Answered';
+                $question->save();
             }
         }
 
