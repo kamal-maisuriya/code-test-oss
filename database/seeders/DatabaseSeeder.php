@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\Artisan;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Artisan::call("passport:purge");
+        Artisan::call("passport:install");
         // \App\Models\User::factory(10)->create();
     }
 }
